@@ -1,0 +1,44 @@
+TITLE
+hello_world_souffle
+INGREDIENTS
+ADD_INGREDIENT 72 DRY haricot_beans
+ADD_INGREDIENT 101 DRY eggs
+ADD_INGREDIENT 108 DRY lard
+ADD_INGREDIENT 111 LIQUID oil
+ADD_INGREDIENT 32 DRY zucchinis
+ADD_INGREDIENT 119 LIQUID water
+ADD_INGREDIENT 114 DRY red_salmon
+ADD_INGREDIENT 100 DRY dijon_mustard
+ADD_INGREDIENT 33 DRY potatoes
+METHOD
+PUT potatoes 3 
+PUT dijon mustard 0
+PUT lard 0
+PUT red salmon 0
+PUT oil 0
+PUT water 0
+LIQUEFY 2 
+POUR 0 0
+TAKE ingreinto 
+PUT ingredient 1 
+FOLD ingredient 2 
+ADD ingredient to 0]
+REMOVE ingredient [from [nth] ]
+COMBINE ingreinto [into [nth] ]
+DIVIDE ingredient [into [nth] ]
+ADD dry ingredients [to [nth] ]
+LIQUEFY ingredient
+LIQUEFY [nth] 
+STIR [the [nth] ] 3 
+STIR ingredient [nth] 
+MIX [the [nth] ] 
+CLEAN [nth] 
+POUR 3 [pth] 0
+VERB ingredient
+VERB [the ingredient] until verbed
+SET aside
+SERVE auxiliary-recipe
+REFRIGERATE 1 
+REFRIGERATE 2 
+SERVE chocolate sauce
+CHOCOLATE sauce
