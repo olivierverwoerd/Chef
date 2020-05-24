@@ -2,6 +2,7 @@
 import sys
 from typing import List, Callable
 from preprocessor import preprocess
+from lexer import lexer
 
 
 def token_topping(file: str) -> List[str]:
