@@ -1,17 +1,29 @@
 """A maybe not so simple chef interpreter made with a functional method"""
 import sys
 from typing import List, Callable
+from chef_token import token
 from preprocessor import preprocess
-from lexer import lexer
+# from lexer import lexer
 
 
-def token_topping(file: str) -> List[str]:
-    input = file.split('\n')
-    tokens = ['NAME']
-    def add_tokens(input: str, tokens: List[str]) -> List[str]:
+def token_topping(input: str) -> List[str]:
+    tokens = []
+    def add_tokens(input: str, tokens: List) -> List[str]:
         new_tokens = tokens.copy()
+        rows = input.split('\n', 1)
+        words = rows[0].split(' ', 1)
+        type = words[0]
+        if len(words) == 1:
+            var = ''
+        else:
+            var = words[1].split()
+        new_tokens.append(token(type, var))
+        if len(rows) == 0 or rows[1] == '':
+            return tokens
+        return add_tokens(rows[1], new_tokens)
 
     return add_tokens(input, tokens)
+
 
 def sub_main(file_name: str) -> str:
     """
@@ -28,7 +40,7 @@ def sub_main(file_name: str) -> str:
     sf = open(file_name + ".ppf", "w")
     sf.write(s)
     sf.close()
-    #print(token_topping(recipe))
+    print(token_topping(s))
 
 
 
