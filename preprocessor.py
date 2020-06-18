@@ -1,4 +1,5 @@
 import re
+import sys
 
 def remove_number_extention(line: str) -> str:
     line = line.replace('1st' , '1')
@@ -16,18 +17,24 @@ def remove_number_extention(line: str) -> str:
     line = line.replace('0th' , '0')
     return line
 
+
 def remove_too_many_spaces(line: str) -> str:
     line = line.replace('    ', ' ')
     line = line.replace('   ', ' ')
     line = line.replace('  ', ' ')
     return line
 
-def preprocess(file: str) -> str:
+
+def preprocess(file_name: str, keep_file: bool) -> str:
     liquids = ["dash", "cup", "l", "ml", "dashes", "cups"]
     commands = ["put","liquefy","pour","fold","add","remove","combine","divide","stir","mix",
              "clean","pour","set","refrigerate","serve","take", "zipwith", "foldl", "foldr"]
     commands_with_double_values = ["zipwith", "pour"]
-    def loop(file: str, r: str = "", state = "TITLE"):
+    f = open(file_name, "r")
+    file = f.read()
+    f.close()
+
+    def loop(file: str, r: str = "", state="TITLE"):
         tmp = ''
         #spits according to what's nessesary
         if state == "INGREDIENTS":
@@ -135,6 +142,10 @@ def preprocess(file: str) -> str:
             state = "INGREDIENTS"
             tmp[1] = tmp[1][1:] # skip last newline
         if len(tmp) == 1: #end of the file
+            if keep_file:
+                sf = open(file_name + ".ppf", "w")
+                sf.write(r)
+                sf.close()
             return r
         else:
             return loop(tmp[1], r + '\n', state)
