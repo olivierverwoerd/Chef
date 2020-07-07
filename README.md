@@ -2,7 +2,7 @@
 ![image](https://i.insider.com/58751b46dd0895e71f8b47b1?width=800&format=jpeg)
 
 ## Uitleg video
-TBA
+https://youtu.be/_Jb3yp3xirM
 
 An very serious Advanced Technical Programming program
 https://esolangs.org/wiki/chef

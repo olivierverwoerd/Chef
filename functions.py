@@ -96,7 +96,7 @@ def add_ingredient(state: List, variables: List):
 
 def take(state: List, variables: List):
     name = str(variables[0])
-    value = 50 # int(input("How much " + name + "shall we add?: "))
+    value = int(input("How much " + name + "shall we add?: "))
     state[0][name] = value
     return state
 

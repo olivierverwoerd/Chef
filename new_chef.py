@@ -34,7 +34,7 @@ def lexer(input: str) -> List[str]:
 
 
 # parser (converts [function, [vars] to [function(), [vars]])
-def parser(instructions: List, debug: bool = False):
+def parser(instructions: List):
     """
     make tokens of the preproccessed input string
     :param input:
@@ -101,15 +101,14 @@ def sub_main(file_name: str) -> str:
     print("-------------------------------")
 
     s = preprocess(file_name, keep_file=True)
-    p = parser(lexer(s))
-    run(p, debug=False)
+    run(parser(lexer(s)), debug=True)
 
 
 def main():
     # sub_main("pretest.chef")
-    sub_main("tiny.chef")
+    # sub_main("tiny.chef")
     sub_main("run.chef")
-    sub_main("higher.chef") # 112233445510203040504" if 50 is added
+    sub_main("higher.chef")
     sub_main("fruit.chef")
 
 
