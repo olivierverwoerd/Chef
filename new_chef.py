@@ -2,7 +2,7 @@
 import sys
 from typing import List, Callable
 from chef_token import token
-from functions import exe, loop
+from functions import loop
 from name_to_function import name_to_function
 from preprocessor import preprocess
 
@@ -20,13 +20,14 @@ def lexer(input: str) -> List[str]:
         rows = input.split('\n', 1)
         words = rows[0].split(' ', 1)
         function = words[0]
-        if len(words) == 1:
-            var = ''
-        else:
-            var = words[1].split()
-        new_tokens.append(token(function, var))
-        if len(rows) == 0 or rows[1] == '':
-            return tokens
+        if function != '':
+            if len(words) == 1:
+                var = ''
+            else:
+                var = words[1].split()
+            new_tokens.append(token(function, var))
+        if len(rows) == 1:
+            return new_tokens
         return add_tokens(rows[1], new_tokens)
 
     return add_tokens(input, [])
@@ -39,10 +40,32 @@ def parser(instructions: List, debug: bool = False):
     :param input:
     :return:
     """
-    #print(instructions[0].get_variables())
-    def replace_name_to_function(instructions: List, new_instructions: List) -> List:
-        print(instructions[0].get_function())
-        new_instructions.append(token(name_to_function(instructions[0].get_function()), instructions[0].get_variables()))
+    def replace_name_to_function(instructions: List, new_instructions: List, loops: List = []) -> List:
+        # print(instructions)
+        inst = name_to_function(instructions[0].get_function())
+        if loops != [] and type(inst) != str:
+            loops[-1].append(token(inst, instructions[0].get_variables()))
+            return replace_name_to_function(instructions[1:], new_instructions, loops)
+        if type(inst) == str:
+            if inst == "loop_start":
+                # in a lot of code the loop is just for the layout for the recipe and is non functional.
+                if instructions[1].get_function() == "LOOP_END":
+                    return replace_name_to_function(instructions[2:], new_instructions, loops)
+                loops.append([instructions[0].get_variables()])
+                return replace_name_to_function(instructions[1:], new_instructions, loops)
+            if inst == "ENDLOOP":
+                loops[-1].append("ENDLOOP")
+                return replace_name_to_function(instructions[1:], new_instructions, loops)
+            if inst == "loop_end":
+                if loops == []:
+                    raise ValueError("Loop ended without start")
+                if len(loops) > 1:
+                    loops[len(loops)-2].append(token(loop, loops.pop(-1)))
+                    return replace_name_to_function(instructions, new_instructions, loops)
+                else:
+                    new_instructions.append(token(loop, loops.pop(-1)))
+        else:
+            new_instructions.append(token(inst, instructions[0].get_variables()))
         if len(instructions) > 1:
             replace_name_to_function(instructions[1:], new_instructions)
         return new_instructions
@@ -55,11 +78,18 @@ def run(instructions: List, debug: bool = False):
         print(List)
 
     def do_function(state: List, instructions: List):
-        new_state = exe(state, instructions[0].get_function(), instructions[0].get_variables())
+        exe = instructions[0].get_function()
+        variables = instructions[0].get_variables()
+        if debug:
+            print("State is now: " + str(state[0]) + "\n" + str(state[1]) + "\n" + str(state[2]))
+            print("Calling" + str(exe) + " with vars: " + str(variables))
+        new_state = exe(state, variables)
+        if type(new_state) == str:  #error is returned
+            raise RuntimeError(new_state)
         if len(instructions) > 1:
             do_function(new_state, instructions[1:])
-
     do_function(state, instructions)
+
 
 def sub_main(file_name: str) -> str:
     """
@@ -67,22 +97,20 @@ def sub_main(file_name: str) -> str:
     :param file_name: The filename in this directory to run.
     note to self: run(parse(lex(text)))
     """
-    print("Running " + file_name)
+    print("\n\nRunning " + file_name)
     print("-------------------------------")
 
-    s = preprocess(file_name, True)
-    # lexer [['TITLE', ['hello_world_souffle']], ['INGREDIENTS', ''], ['ADD_INGREDIENT', ['72', 'DRY', 'haricot_beans']], ['ADD_INGREDIENT', ['101', 'DRY', 'eggs']],
+    s = preprocess(file_name, keep_file=True)
     p = parser(lexer(s))
-    run(p, debug=True)
+    run(p, debug=False)
 
 
 def main():
-    sub_main("pretest.chef")
-    # sub_main("tiny.chef")
-    # assert sub_main("tiny.chef") == "Hello world!"
-    # assert sub_main("run.chef") == "Hello world!"
-    # assert sub_main("higher.chef") == "112233445510203040504" # if 50 is added
-    # assert sub_main("fruit.chef") == "504"
+    # sub_main("pretest.chef")
+    sub_main("tiny.chef")
+    sub_main("run.chef")
+    sub_main("higher.chef") # 112233445510203040504" if 50 is added
+    sub_main("fruit.chef")
 
 
 if __name__ == "__main__":

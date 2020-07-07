@@ -320,10 +320,10 @@ def run(file_name: str, debug=False) -> str:
 
 
 def main():
-    assert run("tiny.chef") == "Hello world!"
-    assert run("run.chef") == "Hello world!"
-    assert run("higher.chef") == "112233445510203040504" # if 50 is added
-    assert run("fruit.chef") == "504"
+    #assert run("tiny.chef") == "Hello world!"
+    print(run("run.chef", debug=True))
+    #assert run("higher.chef") == "112233445510203040504" # if 50 is added
+    #assert run("fruit.chef") == "504"
 
 
 if __name__ == "__main__":

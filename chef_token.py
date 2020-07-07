@@ -1,5 +1,6 @@
 from typing import List
 
+
 class token():
     def __init__(self, function, variables: List):
         self.function = function
