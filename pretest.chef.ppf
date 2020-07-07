@@ -1,0 +1,44 @@
+TITLE hello_world_souffle
+INGREDIENTS
+ADD_INGREDIENT 72 DRY haricot_beans
+ADD_INGREDIENT 101 DRY eggs
+ADD_INGREDIENT 108 DRY lard
+ADD_INGREDIENT 111 LIQUID oil
+ADD_INGREDIENT 32 DRY zucchinis
+ADD_INGREDIENT 119 LIQUID water
+ADD_INGREDIENT 114 DRY red_salmon
+ADD_INGREDIENT 100 DRY dijon_mustard
+ADD_INGREDIENT 33 DRY potatoes
+METHOD
+PUT potatoes 3
+PUT dijon_mustard 0
+PUT lard 0
+PUT red_salmon 0
+PUT oil 0
+PUT water 0
+LIQUEFY_CONTENTS 2
+POUR 0 0
+TAKE ing_reinto
+PUT ingr_edient 1
+FOLD dijon_mustard 2
+ADD dijon_mustard_to 0
+REMOVE dijon_mustard_extra 0
+COMBINE dijon_mustard 3
+DIVIDE dijon_mustard 3
+ADD_DRYS
+LIQUEFY dijon_mustard
+LIQUEFY_CONTENTS 3
+STIR_FOR 3 3
+STIR ingredient 3
+MIX 3
+CLEAN 3
+POUR 3 3
+LOOP_START dijon_mustard
+LOOP_END dijon_mustard
+LOOP_START dijon_mustard
+LOOP_END dijon_mustard
+ENDLOOP
+REFRIGERATE 1
+REFRIGERATE 2
+SERVE_WITH chocolate_sauce
+TITLE chocolate_sauce
